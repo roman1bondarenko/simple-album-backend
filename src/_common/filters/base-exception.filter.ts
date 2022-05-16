@@ -11,11 +11,12 @@ export class BaseExceptionFilter implements ExceptionFilter {
     const request: Request = ctx.getRequest();
     const status = exception.getStatus ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
 
-    if (request.body) {
+    if (request.body && status !== HttpStatus.BAD_REQUEST) {
       // Here we can set up logging tool
       exception.message = `bodyPayload: ${JSON.stringify(request.body)}, message: ${exception.message}`;
+      response.status(status).send(exception.message);
+    } else {
+      response.send(exception.getResponse());
     }
-
-    response.status(status).send(exception.message);
   }
 }

@@ -5,8 +5,7 @@ import {
   ApiBadGatewayResponse,
   ApiBody,
 } from '@nestjs/swagger';
-import { CreateUserDto } from 'modules/users/dtos/create-user.dto';
-import { UserDto } from 'modules/users/dtos';
+import { CreateUserDto } from '../../dtos';
 
 export function ApiRouteCreateUserSwaggerDecorator(): MethodDecorator {
   return applyDecorators(
@@ -15,8 +14,8 @@ export function ApiRouteCreateUserSwaggerDecorator(): MethodDecorator {
       type: CreateUserDto,
     }),
     ApiCreatedResponse({
-      description: 'User was created. Returns created User.',
-      type: UserDto,
+      description: 'User was created. Returns created user ID.',
+      type: String,
     }),
     ApiBadGatewayResponse({ description: 'Internal Server Error' }),
   );

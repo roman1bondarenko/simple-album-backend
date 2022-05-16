@@ -17,14 +17,16 @@ import {
 @Controller()
 export class UserController {
   constructor(
-    private appService: UserService,
+    private userService: UserService,
   ) {}
 
-  @Post()
+  @Post('register')
   @ApiRouteCreateUserSwaggerDecorator()
-  createUser(
+  async createUser(
     @Body(ValidationPipe) payload: CreateUserDto,
-  ): Promise<unknown> {
-    return Promise.resolve(payload);
+  ): Promise<string> {
+    const user = await this.userService.createUser(payload);
+
+    return user.id as string;
   }
 }
