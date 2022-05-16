@@ -3,7 +3,7 @@ import { AuthService } from 'modules/auth/services';
 import { Nullable } from '_common/types/nullable';
 import { UserFindOptions } from 'modules/users/interfaces';
 import { UserDocument } from '../entities';
-import { CreateUserDto, UserDto } from '../dtos';
+import { CreateUserDto } from '../dtos';
 import { UserRepo } from '../repositories';
 
 @Injectable()
@@ -23,7 +23,7 @@ export class UserService {
     });
   }
 
-  findByEmailLogin(payload: UserFindOptions): Promise<Nullable<UserDto>> {
+  findByEmailLogin(payload: UserFindOptions): Promise<Nullable<UserDocument>> {
     return this.userRepo.findOne(payload);
   }
 }

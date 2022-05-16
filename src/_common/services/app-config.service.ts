@@ -11,9 +11,7 @@ export class AppConfigService {
 
   private _appVersion!: string;
 
-  private _ffAuthDisabled!: boolean;
-
-  private _telegram_api_key!: string;
+  private _jwtSecret!: string;
 
   constructor(
     private readonly configService: ConfigService,
@@ -30,9 +28,7 @@ export class AppConfigService {
 
     this._appVersion = this.get('APP_VERSION', '0.0.0');
 
-    this._ffAuthDisabled = this.get('FF_AUTH_DISABLED') === 'true';
-
-    this._telegram_api_key = this.get('TELEGRAM_API_KEY');
+    this._jwtSecret = this.get('JWT_SECRET', 'secret');
   }
 
   private get(key: string, defaultValue = ''): string {
@@ -52,11 +48,7 @@ export class AppConfigService {
     return this._appVersion;
   }
 
-  get ffAuthDisabled(): boolean {
-    return this._ffAuthDisabled;
-  }
-
-  get telegramApiKey(): string {
-    return this._telegram_api_key;
+  get jwtSecret(): string {
+    return this._jwtSecret;
   }
 }
