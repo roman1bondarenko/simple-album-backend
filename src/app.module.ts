@@ -7,6 +7,7 @@ import { BaseExceptionFilter } from '_common/filters/base-exception.filter';
 import { AppController } from 'app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppConfigService } from '_common/services/app-config.service';
+import { UsersModule } from 'modules/users/users.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AppConfigService } from '_common/services/app-config.service';
       inject: [AppConfigService],
       imports: [CommonModule],
     }),
+    UsersModule,
   ],
   providers: [
     {
