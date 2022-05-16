@@ -8,6 +8,7 @@ import { AppController } from 'app.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppConfigService } from '_common/services/app-config.service';
 import { UsersModule } from 'modules/users/users.module';
+import { PhotosModule } from 'modules/photos/photos.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UsersModule } from 'modules/users/users.module';
       imports: [CommonModule],
     }),
     UsersModule,
+    PhotosModule,
   ],
   providers: [
     {
