@@ -1,19 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import * as md5 from 'md5';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { AuthService } from 'modules/auth/services';
+import { Nullable } from '_common/types/nullable';
+import { UserFindOptions } from 'modules/users/interfaces';
 import { UserDocument } from '../entities';
-import { CreateUserDto } from '../dtos';
+import { CreateUserDto, UserDto } from '../dtos';
 import { UserRepo } from '../repositories';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepo: UserRepo) {}
+  constructor(
+    private userRepo: UserRepo,
+    @Inject(forwardRef(() => AuthService))
+    private authService: AuthService,
+  ) {}
 
   createUser(payload: CreateUserDto): Promise<UserDocument> {
-    const hashedPassword = md5(payload.password);
+    const hashedPassword = this.authService.cryptPassword(payload.password);
 
     return this.userRepo.create({
       ...payload,
       password: hashedPassword,
     });
+  }
+
+  findByEmailLogin(payload: UserFindOptions): Promise<Nullable<UserDto>> {
+    return this.userRepo.findOne(payload);
   }
 }

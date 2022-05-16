@@ -5,12 +5,14 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { AuthService } from 'modules/auth/services/auth.service';
 import {
-  ApiRouteCreateUserSwaggerDecorator,
+  ApiRouteCreateUserSwaggerDecorator, ApiRouteLoginUserSwaggerDecorator,
 } from './decorators';
 import { UserService } from './services';
 import {
   CreateUserDto,
+  LoginUserDto,
 } from './dtos';
 
 @ApiTags('Users')
@@ -18,7 +20,16 @@ import {
 export class UserController {
   constructor(
     private userService: UserService,
+    private authService: AuthService,
   ) {}
+
+  @Post('login')
+  @ApiRouteLoginUserSwaggerDecorator()
+  login(
+    @Body(ValidationPipe) payload: LoginUserDto,
+  ): Promise<string> {
+    return this.authService.login(payload);
+  }
 
   @Post('register')
   @ApiRouteCreateUserSwaggerDecorator()
