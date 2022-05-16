@@ -1,4 +1,5 @@
 import {
+  IsEmail,
   IsNotEmpty, IsOptional,
   IsString,
 } from 'class-validator';
@@ -13,6 +14,7 @@ export class LoginUserDto {
   @IsString()
   @ApiProperty()
   @IsOptional()
+  @IsEmail()
   email?: string;
 
   @IsString()
