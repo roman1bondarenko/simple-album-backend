@@ -18,4 +18,8 @@ export class UserRepo {
   findOne(filterOptions: UserFindOptions): Promise<Nullable<UserDocument>> {
     return this.userModel.findOne(filterOptions).exec();
   }
+
+  findById(id: string): Promise<Nullable<UserDocument>> {
+    return this.userModel.findById(id).exec();
+  }
 }

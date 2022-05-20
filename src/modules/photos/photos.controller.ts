@@ -11,9 +11,9 @@ export class PhotosController {
   constructor(private photosService: PhotosService) {
   }
 
-  @Get('photos')
+  @Get('load-photos')
   @UseGuards(JwtAuthGuard)
-  loadPhotos(@Req() { user }: Request): Promise<unknown> {
+  loadPhotos(@Req() { user }: Request): Promise<{ message: string }> {
     return this.photosService.loadPhotos(<JwtPayload>user);
   }
 }

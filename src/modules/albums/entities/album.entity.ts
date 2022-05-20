@@ -13,9 +13,9 @@ export class Album {
   title!: string;
 
   @Prop({
-    ref: User,
+    ref: () => User,
   })
   owner!: User;
 }
 
-export const UserSchema = SchemaFactory.createForClass<Album>(Album);
+export const AlbumSchema = SchemaFactory.createForClass<Album>(Album);

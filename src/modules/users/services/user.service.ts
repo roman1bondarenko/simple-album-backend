@@ -26,4 +26,8 @@ export class UserService {
   findByEmailLogin(payload: UserFindOptions): Promise<Nullable<UserDocument>> {
     return this.userRepo.findOne(payload);
   }
+
+  getById(id: string): Promise<Nullable<UserDocument>> {
+    return this.userRepo.findById(id);
+  }
 }

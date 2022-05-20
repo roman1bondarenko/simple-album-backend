@@ -13,7 +13,7 @@ export class Photo {
   metaAlbumId!: number;
 
   @Prop({
-    ref: Album,
+    ref: () => Album,
   })
   album!: Album;
 
@@ -27,4 +27,4 @@ export class Photo {
   thumbnailUrl!: string;
 }
 
-export const UserSchema = SchemaFactory.createForClass<Photo>(Photo);
+export const PhotoSchema = SchemaFactory.createForClass<Photo>(Photo);
