@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthModule } from 'modules/auth/auth.module';
 import { CommonModule } from '_common/common.module';
 import { HttpModule } from '@nestjs/axios';
@@ -12,16 +12,17 @@ import { PhotosController } from './photos.controller';
 
 @Module({
   imports: [
+    forwardRef(() => AlbumsModule),
     AuthModule,
     CommonModule,
     HttpModule,
     UsersModule,
-    AlbumsModule,
     MongooseModule.forFeature([
       { name: Photo.name, schema: PhotoSchema },
     ]),
   ],
   providers: [PhotosService, PhotosRepo],
   controllers: [PhotosController],
+  exports: [PhotosService],
 })
 export class PhotosModule {}

@@ -8,7 +8,7 @@ export type AlbumDocument = Album & Document;
 export class Album {
   _id!: ObjectId;
 
-  @Prop({ unique: true })
+  @Prop()
   metaId!: number;
 
   @Prop()

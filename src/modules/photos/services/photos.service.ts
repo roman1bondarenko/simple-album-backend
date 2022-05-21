@@ -1,4 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  forwardRef, Inject, Injectable, NotFoundException,
+} from '@nestjs/common';
 import { JwtPayload } from 'modules/auth/interfaces/jwt-payload';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -18,6 +20,7 @@ export class PhotosService {
   constructor(
     private httpService: HttpService,
     private userService: UserService,
+    @Inject(forwardRef(() => AlbumsService))
     private albumService: AlbumsService,
     private photoRepo: PhotosRepo,
   ) {
@@ -80,5 +83,9 @@ export class PhotosService {
       maxcount,
       page,
     });
+  }
+
+  deletePhotosByAlbumMetaIds(ownerId: string, albumsId: string[]): Promise<unknown> {
+    return this.photoRepo.deletePhotosByAlbumsMetaIds(ownerId, albumsId);
   }
 }

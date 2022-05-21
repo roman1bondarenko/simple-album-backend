@@ -7,7 +7,7 @@ export type PhotoDocument = Photo & Document;
 
 @Schema()
 export class Photo {
-  @Prop({ unique: true })
+  @Prop()
   metaId!: number;
 
   @Prop()

@@ -17,4 +17,13 @@ export class PhotosRepo {
     const skip = +maxcount * (+page);
     return this.photoModel.find({ user }).limit(+maxcount).skip(skip).exec();
   }
+
+  deletePhotosByAlbumsMetaIds(ownerId: string, metaAlbumsIds: string[]): Promise<unknown> {
+    return this.photoModel.deleteMany({
+      metaAlbumId: {
+        $in: metaAlbumsIds,
+      },
+      'owner._id': ownerId,
+    }).exec();
+  }
 }

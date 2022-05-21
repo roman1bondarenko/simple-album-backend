@@ -1,7 +1,14 @@
-import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { JwtPayload } from 'modules/auth/interfaces/jwt-payload';
 import { UserService } from 'modules/users/services';
 import { Nullable } from '_common/types/nullable';
+import { PhotosService } from 'modules/photos/services';
 import { CreateAlbumDto, UpdateTitleDto } from './dtos';
 import { Album, AlbumDocument } from './entities';
 import { AlbumsRepo } from './repositories';
@@ -11,6 +18,8 @@ export class AlbumsService {
   constructor(
     private albumsRepo: AlbumsRepo,
     private userService: UserService,
+    @Inject(forwardRef(() => PhotosService))
+    private photoService: PhotosService,
   ) {
   }
 
@@ -36,5 +45,26 @@ export class AlbumsService {
     }
 
     return this.albumsRepo.updateTitle(albumToUpdate.id, payload.new_album_name);
+  }
+
+  async deleteAlbums(
+    { userId }: JwtPayload,
+    albumIds: string[],
+  ): Promise<unknown> {
+    const [user, albumToUpdate] = await Promise.all([
+      this.userService.getById(userId),
+      this.albumsRepo.getManyByIds(albumIds),
+    ]);
+
+    albumToUpdate.forEach((album) => {
+      if (user?._id.toString() !== album.owner._id?.toString()) {
+        throw new ForbiddenException('You have no access to delete albums');
+      }
+    });
+
+    return Promise.all([
+      this.albumsRepo.deleteAlbum(user, albumIds),
+      this.photoService.deletePhotosByAlbumMetaIds(userId, albumIds),
+    ]);
   }
 }
