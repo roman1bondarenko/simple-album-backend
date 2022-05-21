@@ -1,7 +1,7 @@
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_PIPE } from '@nestjs/core';
 import { CommonModule } from '_common/common.module';
 import { BaseExceptionFilter } from '_common/filters/base-exception.filter';
 import { AppController } from 'app.controller';
@@ -27,6 +27,10 @@ import { PhotosModule } from 'modules/photos/photos.module';
     {
       provide: APP_FILTER,
       useClass: BaseExceptionFilter,
+    },
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({ transform: true }),
     },
   ],
   controllers: [AppController],

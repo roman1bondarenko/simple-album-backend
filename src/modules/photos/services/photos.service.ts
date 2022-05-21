@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { JwtPayload } from 'modules/auth/interfaces/jwt-payload';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
@@ -9,6 +9,7 @@ import { User } from 'modules/users/entities';
 import { Photo } from '../entities';
 import { JsonPlaceholderPhoto } from '../interfaces';
 import { PhotosRepo } from '../repositories';
+import { GetPhotoFilters } from '../dtos';
 
 @Injectable()
 export class PhotosService {
@@ -56,6 +57,7 @@ export class PhotosService {
         title: photo.title,
         url: photo.url,
         thumbnailUrl: photo.thumbnailUrl,
+        owner: user,
       };
 
       photosBulk.push(photoDto);
@@ -64,5 +66,19 @@ export class PhotosService {
     await this.photoRepo.createMany(photosBulk);
 
     return { message: 'ok' };
+  }
+
+  async getPhotos({ ownerid, maxcount, page }: GetPhotoFilters): Promise<Photo[]> {
+    const user = await this.userService.getById(ownerid);
+
+    if (!user) {
+      throw new NotFoundException(`User with ${ownerid} not found`);
+    }
+
+    return this.photoRepo.findMany({
+      user,
+      maxcount,
+      page,
+    });
   }
 }
