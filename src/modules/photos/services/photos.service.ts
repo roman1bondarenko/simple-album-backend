@@ -8,6 +8,7 @@ import { UserService } from 'modules/users/services';
 import { Album } from 'modules/albums/entities';
 import { AlbumsService } from 'modules/albums/albums.service';
 import { User } from 'modules/users/entities';
+import { MongoDeletePayloadType } from '_common/types/mongoDeletePayload.type';
 import { Photo } from '../entities';
 import { JsonPlaceholderPhoto } from '../interfaces';
 import { PhotosRepo } from '../repositories';
@@ -85,7 +86,11 @@ export class PhotosService {
     });
   }
 
-  deletePhotosByAlbumMetaIds(ownerId: string, albumsId: string[]): Promise<unknown> {
+  deletePhotosByAlbumMetaIds(ownerId: string, albumsId: string[]): Promise<MongoDeletePayloadType> {
     return this.photoRepo.deletePhotosByAlbumsMetaIds(ownerId, albumsId);
+  }
+
+  deletePhotosByMetaIds(metaIds: string[]): Promise<MongoDeletePayloadType> {
+    return this.photoRepo.deletePhotosByMetaIds(metaIds);
   }
 }

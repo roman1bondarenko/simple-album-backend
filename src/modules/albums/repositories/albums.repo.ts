@@ -2,6 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Nullable } from '_common/types/nullable';
 import { User } from 'modules/users/entities';
+import { MongoDeletePayloadType } from '_common/types/mongoDeletePayload.type';
 import { CreateAlbumDto } from '../dtos';
 import { Album, AlbumDocument } from '../entities';
 
@@ -27,7 +28,7 @@ export class AlbumsRepo {
     return this.albumModel.findByIdAndUpdate(id, { title: newTitle }).exec();
   }
 
-  deleteAlbum(user: Nullable<User>, metaIds: string[]): Promise<unknown> {
+  deleteAlbum(user: Nullable<User>, metaIds: string[]): Promise<MongoDeletePayloadType> {
     return this.albumModel.deleteMany({ user, metaId: { $in: metaIds } }).exec();
   }
 }

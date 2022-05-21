@@ -11,6 +11,7 @@ import { Request } from 'express';
 import { JwtPayload } from 'modules/auth/interfaces/jwt-payload';
 import { Album } from 'modules/albums/entities';
 import { Nullable } from '_common/types/nullable';
+import { MongoDeletePayloadType } from '_common/types/mongoDeletePayload.type';
 import { QueryAlbumId, UpdateTitleDto } from './dtos';
 
 @Controller('')
@@ -31,7 +32,7 @@ export class AlbumsController {
   deleteAlbum(
     @Req() { user }: Request,
     @Query() { albumid }: QueryAlbumId,
-  ): Promise<unknown> {
+  ): Promise<MongoDeletePayloadType[]> {
     return this.albumService.deleteAlbums(<JwtPayload>user, albumid.split(','));
   }
 }

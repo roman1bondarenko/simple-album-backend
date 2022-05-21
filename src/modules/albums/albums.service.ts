@@ -9,6 +9,7 @@ import { JwtPayload } from 'modules/auth/interfaces/jwt-payload';
 import { UserService } from 'modules/users/services';
 import { Nullable } from '_common/types/nullable';
 import { PhotosService } from 'modules/photos/services';
+import { MongoDeletePayloadType } from '_common/types/mongoDeletePayload.type';
 import { CreateAlbumDto, UpdateTitleDto } from './dtos';
 import { Album, AlbumDocument } from './entities';
 import { AlbumsRepo } from './repositories';
@@ -50,7 +51,7 @@ export class AlbumsService {
   async deleteAlbums(
     { userId }: JwtPayload,
     albumIds: string[],
-  ): Promise<unknown> {
+  ): Promise<MongoDeletePayloadType[]> {
     const [user, albumToUpdate] = await Promise.all([
       this.userService.getById(userId),
       this.albumsRepo.getManyByIds(albumIds),
