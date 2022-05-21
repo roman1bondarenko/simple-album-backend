@@ -43,6 +43,9 @@
     "require-await": "error",
     "@typescript-eslint/no-var-requires": 0,
     "@typescript-eslint/no-unsafe-assignment": 0,
+    "nestjs/use-validation-pipe": "off",
+    "@typescript-eslint/no-unsafe-member-access": "off",
+    "@typescript-eslint/no-unsafe-call": "off",
     "import/extensions": [
       "error",
       "ignorePackages",

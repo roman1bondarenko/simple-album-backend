@@ -1,11 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, ObjectId } from 'mongoose';
 import { User } from 'modules/users/entities';
 
 export type AlbumDocument = Album & Document;
 
 @Schema()
 export class Album {
+  _id!: ObjectId;
+
   @Prop({ unique: true })
   metaId!: number;
 
